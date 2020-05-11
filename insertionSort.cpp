@@ -25,7 +25,6 @@
  * 
  */
 
-
 #include <iostream>
 #include <vector>
 #include <iterator>
@@ -39,8 +38,7 @@
 void insertionSort(std::vector<int> &vec)
 {
   // i 代表无序序列首元素（无序序列前为有序序列）
-  auto i = 1;
-  while (i < vec.size())
+  for (auto i = 1; i < vec.size(); i++)
   {
     // 无序序列前为有序序列
     auto j = i - 1;
@@ -57,8 +55,7 @@ void insertionSort(std::vector<int> &vec)
         break;
       }
     }
-    vec[j+1] = itemToInsert;
-    ++i;
+    vec[j + 1] = itemToInsert;
   }
 }
 

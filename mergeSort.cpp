@@ -29,21 +29,26 @@
  * 
  */
 
-
 #include <iostream>
 #include <vector>
 #include <iterator>
+#include <stack>
 
 /**
- * @brief 
- * 
+ * @brief 合并两有序序列，两序列分别为array的0到mid部分和mid+1到末尾部分
+ *
  * @param vec 
  */
-// 合并两有序序列，两序列分别为array的0到mid部分和mid+1到末尾部分。
-void merge(vector<int> &array, vector<int> &copyArray, int left, int right)
+void merge(std::vector<int> &array, std::vector<int> &copyArray, int left, int right)
 {
   int mid = (left + right) / 2;
-  int i = left, j = mid + 1, k = 0;
+  // 左序列指针
+  int i = left;
+  // 左序列指针
+  int j = mid + 1;
+  // 临时数组指针
+  int k = 0;
+
   while (i <= mid || j <= right)
   {
     if (i > mid)
@@ -69,35 +74,54 @@ void merge(vector<int> &array, vector<int> &copyArray, int left, int right)
 
     k++;
   }
-
   for (size_t i = left; i <= right; i++)
   {
     array[i] = copyArray[i - left];
   }
 }
-void mergeSortHelp(vector<int> &array, vector<int> &copyArray, int left, int right)
+/**
+ * @brief 
+ * 
+ * @param array 
+ * @param copyArray 
+ * @param left 
+ * @param right 
+ */
+void mergeSortHelp(std::vector<int> &array, std::vector<int> &copyArray, int left, int right)
 {
   if (left < right)
   {
     int mid = (left + right) / 2;
+    // 左边归并排序，使得左子序列有序
     mergeSortHelp(array, copyArray, left, mid);
+    // 右边归并排序，使得右子序列有序
     mergeSortHelp(array, copyArray, mid + 1, right);
+    // 将两个有序子数组合并操作
     merge(array, copyArray, left, right);
   }
 }
-// 归并排序 递归实现
-void mergeSort(vector<int> &array)
+/**
+ * @brief 归并排序 递归实现
+ * 
+ * @param array 
+ */
+void mergeSort(std::vector<int> &array)
 {
-  vector<int> copyArray(array);
+  // 在排序前，先建好一个长度等于原数组长度的临时数组，避免递归中频繁开辟空间
+  std::vector<int> copyArray(array);
   mergeSortHelp(array, copyArray, 0, array.size() - 1);
 }
-
-// 归并排序 迭代实现
-void mergeSortIteration(vector<int> &array)
+/**
+ * @brief 归并排序 迭代实现
+ * 
+ * @param array 
+ */
+void mergeSortIteration(std::vector<int> &array)
 {
-  vector<int> copyArray(array);
-  int left = 0, right = array.size() - 1;
-  stack<vector<int>> boundaries;
+  std::vector<int> copyArray(array);
+  int left = 0;
+  int right = array.size() - 1;
+  std::stack<std::vector<int>> boundaries;
   while (left < right || !boundaries.empty())
   {
     if (left < right)
@@ -107,7 +131,7 @@ void mergeSortIteration(vector<int> &array)
     }
     else
     {
-      vector<int> boundary = boundaries.top();
+      std::vector<int> boundary = boundaries.top();
       boundaries.pop();
       left = boundary[0];
       right = boundary[1];
@@ -125,8 +149,8 @@ void mergeSortIteration(vector<int> &array)
 
 int main(int argc, char **argv)
 {
-  std::vector<int> vec{1, 3, 9, 5, 7};
-  shellSort(vec);
+  std::vector<int> vec{1, 3, 9, 5, 7, 0, 9, 8};
+  mergeSort(vec);
 
   std::copy(vec.begin(), vec.end(), std::ostream_iterator<int>(std::cout, " "));
   std::cout << std::endl;

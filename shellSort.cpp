@@ -29,7 +29,6 @@
  * 
  */
 
-
 #include <iostream>
 #include <vector>
 #include <iterator>
@@ -43,6 +42,7 @@
 void shellSort(std::vector<int> &vec)
 {
   auto n = vec.size();
+  // 相当于根据gap分组
   for (auto gap = n / 2; gap >= 1; gap /= 2)
   {
     for (auto i = gap; i < n; i++)
@@ -51,12 +51,12 @@ void shellSort(std::vector<int> &vec)
       // 待插入元素
       auto itemToInsert = vec[i];
       auto j = i - gap;
-      while ( j >= 0 && vec[j] >= itemToInsert)
+      while (j >= 0 && vec[j] >= itemToInsert)
       {
-        vec[j+gap] = vec[j];
+        vec[j + gap] = vec[j];
         j -= gap;
       }
-      vec[j+gap] = itemToInsert;
+      vec[j + gap] = itemToInsert;
     }
   }
 }
