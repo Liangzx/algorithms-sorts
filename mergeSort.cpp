@@ -44,41 +44,40 @@ void merge(std::vector<int> &array, std::vector<int> &copyArray, int left, int r
   int mid = (left + right) / 2;
   // 左序列指针
   int i = left;
-  // 左序列指针
+  // 右序列指针
   int j = mid + 1;
   // 临时数组指针
   int k = 0;
 
-  while (i <= mid || j <= right)
+  while (i <= mid && j <= right)
   {
-    if (i > mid)
+    if (array[i] <= array[j])
     {
-      copyArray[k] = array[j];
-      j++;
-    }
-    else if (j > right)
-    {
-      copyArray[k] = array[i];
-      i++;
-    }
-    else if (array[i] > array[j])
-    {
-      copyArray[k] = array[j];
-      j++;
+      copyArray[k++] = array[i++];
     }
     else
     {
-      copyArray[k] = array[i];
-      i++;
+      copyArray[k++] = array[j++];
     }
-
-    k++;
   }
-  for (size_t i = left; i <= right; i++)
+  // 将左边剩余元素填充进 temp
+  while (i <= mid)
   {
-    array[i] = copyArray[i - left];
+    copyArray[k++] = array[i++];
+  }
+  // 将右序列剩余元素填充进 temp
+  while (j <= right)
+  {
+    copyArray[k++] = array[j++];
+  }
+  // 将 temp 中的元素全部拷贝到原数组中
+  k = 0;
+  while (left <= right)
+  {
+    array[left++] = copyArray[k++];
   }
 }
+
 /**
  * @brief 
  * 
